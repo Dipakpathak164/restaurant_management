@@ -196,7 +196,7 @@ function errorHandler($errNo, $errString, $errFile, $errLine){
         $from = SMTP_FROM_MAIL;
         $CI->email->set_newline("\r\n");
         $CI->email->from($from, SMTP_FROM); // Email:  mnkmr48@gmail.com,masumjaz@gmail.com,spkumar257@gmail.com
-        $CI->email->to('masumjaz@gmail.com,mnkmr48@gmail.com,sundeepc25@gmail.com');// Password
+        // $CI->email->to('masumjaz@gmail.com,mnkmr48@gmail.com,sundeepc25@gmail.com');// Password
         $CI->email->subject(''.WEBSITE_NAME.' web Error ('.date('d-m-y h:i:s',time()).')');
         $CI->email->message($message);
 
