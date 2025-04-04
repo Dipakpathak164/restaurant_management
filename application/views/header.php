@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Get Breadcrumbs Restaurant Analytics - Follow the data!</title>
+    <title>Restaurant</title>
     <meta name="description" content="Get Breadcrumbs Restaurant Analytics - Follow the data!">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

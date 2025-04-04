@@ -118,7 +118,6 @@ class Auth extends CI_Controller{
                     //set session data here
                     $session_data = array(
                         'identity' => $username,
-                        'auth_token' => $user_detail[0]->auth_token,
                         'nick_name' => $user_detail[0]->first_name,
                         'full_name' => ucwords($user_detail[0]->first_name.' '.$user_detail[0]->last_name),
                         'user_id' => $user_detail[0]->id,
@@ -129,7 +128,7 @@ class Auth extends CI_Controller{
                     $this->session->set_userdata($session_data);
 
                     if ($this->group_id == ADMIN) {
-                        $url = base_url() . 'Dashboard/restaurant_onboarding';
+                        $url = base_url() . 'Dashboard/customers_list';
                     } elseif ($this->group_id == COMPANY_ADMIN) {
                         $url = base_url() . 'Dashboard/home';
                     } elseif ($this->group_id == USERS) {

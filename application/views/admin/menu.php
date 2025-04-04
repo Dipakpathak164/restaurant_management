@@ -54,14 +54,14 @@
     }
 
     .btn {
-        background: #4C68F4;
+        background: #007bff;
         color: #ffffff;
-        border: #4C68F4;
+        border: #007bff;
         font-size: 16px;
         height: 40px;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         box-shadow: none !important;
-        border: 1px solid #4C68F4 !important;
+        border: 1px solid #007bff !important;
         font-weight: 600
     }
 
@@ -74,7 +74,7 @@
     }
 
     #sidebar-menu>ul>li>a:hover {
-        background-color: #4C68F4;
+        background-color: #007bff;
         -webkit-transition: 0.3s;
         -moz-transition: 0.3s;
         -ms-transition: 0.3s;
@@ -88,7 +88,7 @@
     }
 
     .active_menu a {
-        background-color:#4C68F4;
+        background-color:#007bff;
         -webkit-transition: 0.3s;
         -moz-transition: 0.3s;
         -ms-transition: 0.3s;
@@ -218,6 +218,43 @@
     a.subdrop span .fa-angle-left::before {
         content: '\f077' !important;
     }
+
+    /* css for location filter in home dashboard  */
+    div.filter-dropdown{
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    
+        .dropdown-content {
+            display: None;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+        
+        .dropdown-content label {
+            display: block;
+            padding: 5px;
+            cursor: pointer;
+        }
+        
+        .dropdown-content label:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .dropdown button {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    }
 </style>
 
 <!-- top bar navigation -->
@@ -236,23 +273,28 @@
 
     <nav class="navbar-custom d-flex justify-content-md-end justify-content-between align-items-center">
         <ul class="list-inline float-right mb-0 sm_d_flex">
-            <?php if ($this->role_id == ADMIN) { ?>
             <li class="list-inline-item dropdown notif">
                 <a class="nav-link dropdown-toggle nav-user pl_sm_0 d-inline-flex align-items-center"
                     data-toggle="dropdown" href="#" aria-expanded="false" id="dropdownMenuButton1">
                     <div class="user_profile">
-                        <img src="<?php echo IMAGE_PATH?>VendorAvatar.png" alt="Profile image" class="avatar-rounded">
+                        <img src="<?php echo IMAGE_PATH?>no_profile.png" alt="Profile image" class="avatar-rounded">
                     </div>
                     <div class="profile_desc">
-                        <span class="user_title">
-                            <?php 
-                      echo $profile_variables->first_name . ' ' . $profile_variables->last_name; 
-                     ?>
-                        </span>
-                        <small class="user_id">
-                            breadcrumbs
-                        </small>
+                      <span class="user_title">
+                         <?php 
+                           $profile = $this->session->userdata('profile_variables');
+                            if(isset($profile) && !empty($profile)) {
+                             echo $profile->first_name . ' ' . $profile->last_name;
+                            } else {
+                            echo "Guest";
+                          }
+                         ?>
+                      </span>
+                      <small class="user_id">
+                          Eatsy
+                      </small>
                     </div>
+
                     <img src="<?php echo IMAGE_PATH?>arrow-down.png" alt="Profile image" class="dropdown_arrow">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="dropdownMenuButton1">
@@ -267,75 +309,6 @@
                     </a>
                 </div>
             </li>
-            <?php } elseif($this->role_id == COMPANY_ADMIN){ ?>
-            <li class="list-inline-item dropdown notif">
-                <a class="nav-link dropdown-toggle nav-user pl_sm_0 d-inline-flex align-items-center"
-                    data-toggle="dropdown" href="#" aria-expanded="false" id="dropdownMenuButton1">
-                    <div class="user_profile">
-                        <img src="<?php echo IMAGE_PATH?>VendorAvatar.png" alt="Profile image" class="avatar-rounded">
-                    </div>
-                    <div class="profile_desc">
-                        <span class="user_title">
-                            <?php 
-                      echo $profile_variables->first_name . ' ' . $profile_variables->last_name; 
-                     ?>
-                        </span>
-                        <small class="user_id">
-                        <?php 
-                        // Dynamically display the user's email
-                          echo $profile_variables->email; 
-                        ?>
-                        </small>
-                    </div>
-                    <img src="<?php echo IMAGE_PATH?>arrow-down.png" alt="Profile image" class="dropdown_arrow">
-                </a>
-                <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="dropdownMenuButton1">
-                    <a href="javascript:void(0)" data-toggle="modal" data-bs-target="#change_password"
-                        class="dropdown-item notify-item">
-                        <i class="fas fa-key"></i>
-                        <span>Change Password</span>
-                    </a>
-                    <a href="<?php echo base_url()?>dashboard/logout" class="dropdown-item notify-item">
-                        <i class="fas fa-power-off"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </li>
-            <?php } elseif($this->role_id == USERS){ ?>
-            <li class="list-inline-item dropdown notif">
-                <a class="nav-link dropdown-toggle nav-user pl_sm_0 d-inline-flex align-items-center"
-                    data-toggle="dropdown" href="#" aria-expanded="false" id="dropdownMenuButton1">
-                    <div class="user_profile">
-                        <img src="<?php echo IMAGE_PATH?>VendorAvatar.png" alt="Profile image" class="avatar-rounded">
-                    </div>
-                    <div class="profile_desc">
-                        <span class="user_title">
-                            <?php 
-                      echo $profile_variables->first_name . ' ' . $profile_variables->last_name; 
-                     ?>
-                        </span>
-                        <small class="user_id">
-                        <?php 
-                        // Dynamically display the user's email
-                          echo $profile_variables->email; 
-                        ?>
-                        </small>
-                    </div>
-                    <img src="<?php echo IMAGE_PATH?>arrow-down.png" alt="Profile image" class="dropdown_arrow">
-                </a>
-                <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="dropdownMenuButton1">
-                    <a href="javascript:void(0)" data-toggle="modal" data-bs-target="#change_password"
-                        class="dropdown-item notify-item">
-                        <i class="fas fa-key"></i>
-                        <span>Change Password</span>
-                    </a>
-                    <a href="<?php echo base_url()?>dashboard/logout" class="dropdown-item notify-item">
-                        <i class="fas fa-power-off"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </li>
-            <?php } ?>
 
         </ul>
 
@@ -359,7 +332,7 @@
 
         <div id="sidebar-menu">
             <div class="w-100 mx-auto text-center menu-header">
-                <img alt="Logo" src="<?php echo IMAGE_PATH?>Black-Logo.webp" class="sidebar-logo mx-auto" width="168" />
+                <img alt="Logo" src="<?php echo IMAGE_PATH?>logo.png" class="sidebar-logo mx-auto" width="168" />
             </div>
             <ul>
                 <?php if ($this->role_id == ADMIN) { ?>

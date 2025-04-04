@@ -1,9 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
 
 class Migration_Install_ion_auth extends CI_Migration {
 
-    public function up()
-    {
+    public function up() {
         // Drop table 'groups' if it exists
         $this->dbforge->drop_table('groups', TRUE);
 
@@ -11,7 +10,7 @@ class Migration_Install_ion_auth extends CI_Migration {
         $this->dbforge->add_field(array(
             'id' => array(
                 'type' => 'INT',
-                'constraint' => '8',
+                'constraint' => 11,
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
@@ -22,30 +21,18 @@ class Migration_Install_ion_auth extends CI_Migration {
             'description' => array(
                 'type' => 'VARCHAR',
                 'constraint' => '100',
-            )
+            ),
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('groups');
 
-        // Dumping data for table 'groups'
+        // Insert default Super Admin group
         $data = array(
-            array(
-                'id' => '1',
-                'name' => 'SUPER ADMIN',
-                'description' => 'SUPER ADMIN'
-            ),
-            array(
-                'id' => '2',
-                'name' => 'COMPANY ADMIN',
-                'description' => 'COMPANY ADMIN'
-            ),
-            array(
-                'id' => '3',
-                'name' => 'USERS',
-                'description' => 'USERS'
-            ),
+            'id' => 1,
+            'name' => 'super_admin',
+            'description' => 'Super Administrator'
         );
-        $this->db->insert_batch('groups', $data);
+        $this->db->insert('groups', $data);
 
         // Drop table 'users' if it exists
         $this->dbforge->drop_table('users', TRUE);
@@ -54,13 +41,13 @@ class Migration_Install_ion_auth extends CI_Migration {
         $this->dbforge->add_field(array(
             'id' => array(
                 'type' => 'INT',
-                'constraint' => '8',
+                'constraint' => 11,
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
             'ip_address' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '16'
+                'constraint' => '45'
             ),
             'username' => array(
                 'type' => 'VARCHAR',
@@ -68,7 +55,7 @@ class Migration_Install_ion_auth extends CI_Migration {
             ),
             'password' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '80',
+                'constraint' => '255',
             ),
             'salt' => array(
                 'type' => 'VARCHAR',
@@ -76,54 +63,57 @@ class Migration_Install_ion_auth extends CI_Migration {
             ),
             'email' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '100'
+                'constraint' => '254',
+                'unique' => TRUE
+            ),
+            'activation_selector' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '255',
+                'null' => TRUE
             ),
             'activation_code' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '40',
+                'constraint' => '255',
                 'null' => TRUE
             ),
-            'last_otp' => array(
+            'forgotten_password_selector' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '40',
+                'constraint' => '255',
                 'null' => TRUE
             ),
             'forgotten_password_code' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '40',
+                'constraint' => '255',
                 'null' => TRUE
             ),
             'forgotten_password_time' => array(
                 'type' => 'INT',
-                'constraint' => '11',
-                'unsigned' => TRUE,
+                'constraint' => 11,
+                'null' => TRUE
+            ),
+            'remember_selector' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '255',
                 'null' => TRUE
             ),
             'remember_code' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '40',
+                'constraint' => '255',
                 'null' => TRUE
             ),
             'created_on' => array(
                 'type' => 'INT',
-                'constraint' => '11',
-                'unsigned' => TRUE,
+                'constraint' => 11,
             ),
             'last_login' => array(
                 'type' => 'INT',
-                'constraint' => '11',
-                'unsigned' => TRUE,
+                'constraint' => 11,
                 'null' => TRUE
             ),
             'active' => array(
                 'type' => 'TINYINT',
-                'constraint' => '1',
-                'unsigned' => TRUE,
-                'null' => TRUE
-            ),
-            'auth_token' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 512,
+                'constraint' => 1,
+                'default' => 1
             ),
             'first_name' => array(
                 'type' => 'VARCHAR',
@@ -135,164 +125,32 @@ class Migration_Install_ion_auth extends CI_Migration {
                 'constraint' => '128',
                 'null' => TRUE
             ),
-            'phone' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 64,
-                'null' => TRUE
-            ),
-            'gender' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 8,
-                'null' => TRUE
-            ),
-            'dob' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
             'account_verified' => array(
                 'type' => 'INT',
                 'default' => 0
             ),
-            'personal_email' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '64',
-                'null' => TRUE,
-            ),
-            'doj' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'user_profile' => array(
-                'type' => 'TEXT',
-                'null' => TRUE,
-            ),
-            'status' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'emp_id' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '128',
-                'null' => TRUE,
-            ),
-            'job_seeker_id' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '128',
-                'null' => TRUE,
-            ),
-            'company_name' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '128',
-                'null' => TRUE,
-            ),
-            'designation' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '128',
-                'null' => TRUE,
-            ),
-            'country_id' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'state_id' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'city_id' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'zipcode' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'location' => array(
-                'type' => 'TEXT',
-                'null' => TRUE,
-            ),
-            'address' => array(
-                'type' => 'TEXT',
-                'null' => TRUE,
-            ),
-            'is_profile_complete' => array(
-                'type' => 'INT',
-                'null' => TRUE,
-            ),
-            'profile_img' => array(
-                'type' => 'TEXT',
-                'null' => TRUE,
-            ),
-            'company_logo' => array(
-                'type' => 'TEXT',
-                'null' => TRUE,
-            ),
-
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('users');
 
-        // Dumping data for table 'users'
+        // Insert default Super Admin user
         $data = array(
-            array(
-                'id' => '1',
-                'ip_address' => '127.0.0.1',
-                'username' => 'superadmin',
-                'password' => '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36',
-                'salt' => '',
-                'email' => 'admin@getbreadcrumbs.com',
-                'activation_code' => '',
-                'forgotten_password_code' => NULL,
-                'created_on' => time(),
-                'last_login' => time(),
-                'active' => '1',
-                'auth_token' => 'bf1d387bd6c98ffd8df97bcbf53ff0e7',
-                'first_name' => 'Super',
-                'last_name' => 'Admin',
-                'account_verified' =>1
-            ),
-            array(
-                'id' => '2',
-                'ip_address' => '127.0.0.1',
-                'username' => 'info@restaurant1.com',
-                'password' => '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36',
-                'salt' => '',
-                'email' => 'info@restaurant1.com',
-                'activation_code' => '',
-                'forgotten_password_code' => NULL,
-                'created_on' => time(),
-                'last_login' => time(),
-                'active' => '1',
-                'auth_token' => 'bf1d387bd6c98ffd8df97bcbf53ff0e7',
-                'first_name' => 'Restaurant',
-                'last_name' => 'Admin',
-                'account_verified' =>1
-            ),
-            array(
-                'id' => '3', // Unique ID
-                'ip_address' => '127.0.0.1',
-                'username' => 'info@restaurant2.com',
-                'password' => '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', 
-                'salt' => '',
-                'email' => 'info@restaurant2.com',
-                'activation_code' => '',
-                'forgotten_password_code' => NULL,
-                'created_on' => time(),
-                'last_login' => time(),
-                'active' => '1',
-                'auth_token' => 'bf1d387bd6c98ffd8df97bcbf53ff0e7',
-                'first_name' => 'Restaurant',
-                'last_name' => 'Admin',
-                'account_verified' => 1
-            )
-        );
-        $this->db->insert_batch('users', $data);
+            'id' => '1',
+            'ip_address' => '127.0.0.1',
+            'username' => 'superadmin',
+            'password' => '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36',
+            'salt' => '',
+            'email' => 'info@restaurant.com',
+            'activation_code' => '',  
+            'forgotten_password_code' => NULL,
+            'created_on' => time(),
+            'last_login' => time(),
+            'active' => '1',
+            'first_name' => 'Super',
+            'last_name' => 'Admin',
+            'account_verified' =>1
+        ); 
+        $this->db->insert('users', $data);
 
         // Drop table 'users_groups' if it exists
         $this->dbforge->drop_table('users_groups', TRUE);
@@ -344,40 +202,37 @@ class Migration_Install_ion_auth extends CI_Migration {
         );
         $this->db->insert_batch('users_groups', $data);
 
-
-        // Drop table 'login_attempts' if it exists
-        $this->dbforge->drop_table('login_attempts', TRUE);
-        // Table structure for table 'login_attempts'
-        $this->dbforge->add_field(array(
-            'id' => array(
-                'type' => 'INT',
-                'constraint' => '8',
-                'unsigned' => TRUE,
-                'auto_increment' => TRUE
-            ),
-            'ip_address' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '16'
-            ),
-            'login' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
-                'null' => TRUE
-            ),
-            'time' => array(
-                'type' => 'INT',
-                'constraint' => '11',
-                'unsigned' => TRUE,
-                'null' => TRUE
-            )
-        ));
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('login_attempts');
+      // Drop table 'login_attempts' if it exists
+       $this->dbforge->drop_table('login_attempts', TRUE);
+       // Table structure for table 'login_attempts'
+       $this->dbforge->add_field(array(
+        'id' => array(
+            'type' => 'INT',
+            'constraint' => '8',
+            'unsigned' => TRUE,
+            'auto_increment' => TRUE
+        ),
+        'ip_address' => array(
+            'type' => 'VARCHAR',
+            'constraint' => '16'
+        ),
+        'login' => array(
+            'type' => 'VARCHAR',
+            'constraint' => '100',
+            'null' => TRUE
+        ),
+        'time' => array(
+            'type' => 'INT',
+            'constraint' => '11',
+            'unsigned' => TRUE,
+            'null' => TRUE
+        )
+    ));
+    $this->dbforge->add_key('id', TRUE);
+    $this->dbforge->create_table('login_attempts');
 
     }
-
-    public function down()
-    {
+    public function down() {
         $this->dbforge->drop_table('users', TRUE);
         $this->dbforge->drop_table('groups', TRUE);
         $this->dbforge->drop_table('users_groups', TRUE);

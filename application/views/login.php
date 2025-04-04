@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Get Breadcrumbs Restaurant Analytics - Follow the data!</title>
+    <title>Food </title>
     <!--<link rel="shortcut icon" href="<?php /*echo IMAGE_PATH*/ ?>happynotes_logo.png">-->
 
     <link rel="apple-touch-icon" sizes="180x180" href="<?php echo IMAGE_PATH ?>White-Logo2.png">
@@ -70,7 +70,7 @@
             width: 100%;
             height: 50px;
             border-radius: 5px;
-            background-color: #007bff;
+            background-color:#e84242;
             font-weight: 500;
             font-size: 14px;
         }
@@ -167,7 +167,7 @@
         }
 
         .modal-header {
-            background-color: #007bff;
+            background-color:#e84242;
             padding: 0;
             height: 45px;
         }
@@ -460,7 +460,7 @@
     font-size: 15px
 }
     .link_text{
-    color: #007bff;
+    color:#e84242;
     }
     .link_text:hover{
         text-decoration: none;
@@ -688,7 +688,9 @@
 
                     ?>
                     <?php echo form_open('Auth/check_login', array('class' => "form-login1")) ?>
-                     <img src="<?php echo IMAGE_PATH?>Black-Logo.webp" alt="Black-Logo" width="200">
+                     <a href="<?php echo base_url()?>">
+                       <img src="<?php echo IMAGE_PATH?>logo.png" alt="Black-Logo" width="100">
+                     </a>
                     <h4 class="sign_in__text mb-3 mt-3">Log in </h4>
                     <div>
                      
@@ -713,11 +715,6 @@
                                 <a href="javascript:void(0);" class="" id="onForgot"><span data-toggle="modal" data-target="#forgot">Forgot Password?</span></a>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 text-center">
-                        <a href="<?php echo base_url()?>breadcrumbs-onboarding-questionnarie" class="link_text">
-                        Onboarding Questionnarie <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                        </a>
                     </div>
                     <?php echo form_close() ?>
 
@@ -747,7 +744,7 @@
                     <div class="modal-footer">
                         <span class="forgot_error" style="color: red"></span>
                         <b class="error_forget_email" style="color: red"></b>
-                        <button type="submit" class="btn btn-success forgot_button font-weight-bold" style="border: none;color: #fff;background: #007bff;border-radius: 0; border-color:#007bff">
+                        <button type="submit" class="btn btn-success forgot_button font-weight-bold" style="border: none;color: #fff;background:#e84242;border-radius: 0; border-color:#007bff">
                             Submit <span class="forgot_fa_spin_icon"></span>
                         </button>
                     </div>

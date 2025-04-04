@@ -2,168 +2,87 @@
 
 class Migration_base_table extends CI_Migration {
 
-    public function up(){
-
-        /*create add new company table*/
-        $fields = array(
-            'company_id' => array(
+    public function up() {
+        // Customers Table with Authentication Fields
+        $this->dbforge->add_field([
+            'id' => [
                 'type' => 'INT',
-                'constraint' => '16',
+                'constraint' => 11,
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
-            ),
-            'company_name' => array(
+            ],
+            'name' => [
                 'type' => 'VARCHAR',
-                'constraint' => '256',
-                'null' => TRUE,
-            ),
-            'company_phone' => array(
+                'constraint' => '100'
+            ],
+            'email' => [
                 'type' => 'VARCHAR',
-                'constraint' => '64',
-                'null' => TRUE,
-            ),
-            'company_email' => array(
+                'constraint' => '100',
+                'unique' => TRUE
+            ],
+            'password' => [ // Hashed password for login
                 'type' => 'VARCHAR',
-                'constraint' => '64',
-                'null' => TRUE,
-            ),
-            'company_country_id' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '128',
-                'null' => TRUE,
-            ),
-            'company_logo' => array(
-                'type' => 'TEXT',
-                'null' => TRUE,
-            ),
-            'creation_time' => array(
-                'type' => 'INT',
-                'constraint' => '11',
-                'null' => TRUE,
-            ),
-            'created_by' => array(
-                'type' => 'INT',
-                'null' => TRUE,
-            ),
-            'update_time' => array(
-                'type' => 'INT',
-                'constraint' => '11',
-                'null' => TRUE,
-            ),
-            'updated_by' => array(
-                'type' => 'INT',
-                'null' => TRUE,
-            ),
-            'is_active' => array(
+                'constraint' => '255'
+            ],
+            'active' => [ // Activation status (0 = inactive, 1 = active)
                 'type' => 'TINYINT',
-                'constraint' => '1',
-                'null' => TRUE,
-            ),
-        );
-        $this->dbforge->add_field($fields);
-        $this->dbforge->add_key('company_id',TRUE);
-        $this->dbforge->create_table('company',TRUE);
+                'constraint' => 1,
+                'default' => 1
+            ],
+            'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
+        ]);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('customers');
 
-        /*create add new customer users table*/
-        $fields = array(
-            'comp_restaurant_id' => array(
+        // Products Table
+        $this->dbforge->add_field([
+            'id' => [
                 'type' => 'INT',
-                'constraint' => '16',
+                'constraint' => 11,
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
-            ),
-            'company_id' => array(
-                'type' => 'INT',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'restaurant_name' => array(
+            ],
+            'name' => [
                 'type' => 'VARCHAR',
-                'constraint' => '128',
-                'null' => TRUE,
-            ),
-            'restaurant_url' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '128',
-                'null' => TRUE,
-            ),
-            'creation_time' => array(
-                'type' => 'INT',
-                'constraint' => '11',
-                'null' => TRUE,
-            ),
-            'created_by' => array(
-                'type' => 'INT',
-                'null' => TRUE,
-            ),
-            'update_time' => array(
-                'type' => 'INT',
-                'constraint' => '11',
-                'null' => TRUE,
-            ),
-            'updated_by' => array(
-                'type' => 'INT',
-                'null' => TRUE,
-            ),
-            'is_active' => array(
-                'type' => 'TINYINT',
-                'constraint' => '1',
-                'null' => TRUE,
-            ),
-        );
-        $this->dbforge->add_field($fields);
-        $this->dbforge->add_key('comp_restaurant_id',TRUE);
-        $this->dbforge->create_table('comp_restaurant',TRUE);
+                'constraint' => '100'
+            ],
+            'price' => [
+                'type' => 'DECIMAL',
+                'constraint' => '10,2'
+            ]
+        ]);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('products');
 
-        /*create add new customer users table*/
-        $fields = array(
-            'company_user_id' => array(
+        // Orders Table
+        $this->dbforge->add_field([
+            'id' => [
                 'type' => 'INT',
-                'constraint' => '16',
+                'constraint' => 11,
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
-            ),
-            'user_id' => array(
+            ],
+            'customer_id' => [
                 'type' => 'INT',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'company_id' => array(
-                'type' => 'INT',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'comp_restaurant_id' => array(
-                'type' => 'INT',
-                'constraint' => '16',
-                'null' => TRUE,
-            ),
-            'update_time' => array(
-                'type' => 'INT',
-                'constraint' => '11',
-                'null' => TRUE,
-            ),
-            'updated_by' => array(
-                'type' => 'INT',
-                'null' => TRUE,
-            ),
-            'is_active' => array(
-                'type' => 'TINYINT',
-                'constraint' => '1',
-                'null' => TRUE,
-            ),
-        );
-        $this->dbforge->add_field($fields);
-        $this->dbforge->add_key('company_user_id',TRUE);
-        $this->dbforge->create_table('company_users',TRUE);
+                'constraint' => 11,
+                'unsigned' => TRUE
+            ],
+            'total_amount' => [
+                'type' => 'DECIMAL',
+                'constraint' => '10,2'
+            ],
+            'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
+        ]);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('orders');
 
+        // Foreign Key Constraints
+        // $this->db->query('ALTER TABLE orders ADD CONSTRAINT fk_orders_customer FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE');
     }
 
-    public function down(){
-
-        $this->dbforge->drop_table('customer',TRUE);
-        $this->dbforge->drop_table('company_users',TRUE);
-
+    public function down() {
+        $this->dbforge->drop_table('orders');
+        $this->dbforge->drop_table('products');
+        $this->dbforge->drop_table('customers');
     }
-
 }
